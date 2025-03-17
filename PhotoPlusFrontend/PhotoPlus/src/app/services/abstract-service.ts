@@ -2,12 +2,15 @@ import { environment } from '../../environments/environment';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { PageInfo } from '../models/page-info/page-info';
+import { ConfigService } from './config/config.service';
 
 export abstract class AbstractService<T> {
 
-  protected hostAddress = environment.hostAddress;
+  protected hostAddress: string;
 
-  constructor(protected _http: HttpClient, protected endpointUrl: string) { }
+  constructor(protected _http: HttpClient, protected endpointUrl: string, protected configService: ConfigService) {
+    this.hostAddress = this.configService.getApiUrl();
+  }
 
   public getAll(): Observable<T[]>  {
     return this._http.get<T[]>(this.hostAddress + this.endpointUrl + '/all');

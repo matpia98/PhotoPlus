@@ -1,19 +1,21 @@
 import { Injectable } from '@angular/core';
-import { AbstractService } from '../abstract-service';
-import { Order } from 'src/app/models/order/order';
 import { HttpClient } from '@angular/common/http';
+import { AbstractService } from '../abstract-service';
+import { Order } from '../../models/order/order';
 import { OrderStatus } from 'src/app/models/order-status/order-status';
 import { PageInfo } from 'src/app/models/page-info/page-info';
 import { Observable } from 'rxjs';
 import { LoginService } from "../login/login.service";
+import { ConfigService } from '../config/config.service';
+import { PatchFieldChangeService } from '../patch/patch-field-change.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OrderService extends AbstractService<Order> {
 
-  constructor(http: HttpClient) {
-    super(http, "order");
+  constructor(http: HttpClient, configService: ConfigService) {
+    super(http, "order", configService);
   }
 
   postOrder(order: Order) {
@@ -40,6 +42,5 @@ export class OrderService extends AbstractService<Order> {
   buy(order: Order): Observable<Order> {
     return this._http.post<Order>(this.hostAddress + this.endpointUrl + "/buy/", order);
   }
-
 
 }

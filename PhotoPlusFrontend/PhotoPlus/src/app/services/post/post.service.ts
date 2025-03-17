@@ -3,14 +3,15 @@ import { AbstractService } from '../abstract-service';
 import { HttpClient } from '@angular/common/http';
 import { Post } from '../../models/post/post';
 import { Observable } from 'rxjs';
+import { ConfigService } from '../config/config.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PostService extends AbstractService<Post> {
 
-  constructor(private http: HttpClient) { 
-    super(http, "post");
+  constructor(http: HttpClient, configService: ConfigService) {
+    super(http, "post", configService);
   }
 
   getAllFromTopic(topicCode: string): Observable<Post[]>{

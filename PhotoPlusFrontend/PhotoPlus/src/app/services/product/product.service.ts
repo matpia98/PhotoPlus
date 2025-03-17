@@ -5,6 +5,7 @@ import { Category } from '../../models/category/category';
 import { AbstractService } from '../abstract-service';
 import { PageInfo } from 'src/app/models/page-info/page-info';
 import { Observable } from 'rxjs';
+import { ConfigService } from '../config/config.service';
 
 export enum ProductSortBy{
   PRICE_ASCENDING = 'priceAsc',
@@ -16,8 +17,8 @@ export enum ProductSortBy{
 })
 export class ProductService extends AbstractService<Product> {
 
-  constructor(http: HttpClient) {
-    super(http, 'product');
+  constructor(http: HttpClient, configService: ConfigService) {
+    super(http, 'product', configService);
   }
 
   public getDataFromLinks(product: Product) {

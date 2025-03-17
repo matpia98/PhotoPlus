@@ -36,7 +36,7 @@ export class UserFormService {
       name: alias.name,
       surname: alias.surname,
       number: alias.phoneNumber,
-      role: Role.CLIENT,
+      userRole: Role.CLIENT,
       code: null
     };
     return user;

@@ -1,15 +1,23 @@
 ### STAGE 1: Build ###
-FROM node:14-alpine AS build
+FROM node:18.19-alpine AS build
 WORKDIR /usr/src/app
-COPY package.json ./
-COPY package-lock.json ./
-RUN npm install
-RUN npm install -g @angular/cli@11.2.19
-COPY . .
-RUN ng build
-#--prod=true
 
-FROM nginx:1.17.1-alpine
+# Add OpenSSL legacy provider environment variable
+ENV NODE_OPTIONS=--openssl-legacy-provider
+
+COPY package.json package-lock.json ./
+
+RUN npm install --legacy-peer-deps
+RUN npm install -g @angular/cli@12.2.13
+
+COPY . .
+RUN ng build --configuration production
+
+FROM nginx:1.25-alpine
 
 COPY --from=build /usr/src/app/dist/PhotoPlus /usr/share/nginx/html
 COPY nginx-custom.conf /etc/nginx/conf.d/default.conf
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]

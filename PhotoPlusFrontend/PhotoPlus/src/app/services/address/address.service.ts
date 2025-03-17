@@ -9,6 +9,7 @@ import { LoginService } from "../login/login.service";
 import { AbstractService } from "../abstract-service";
 import { FieldChange } from "../patch/field-change";
 import { PatchFieldChangeService } from "../patch/patch-field-change.service";
+import { ConfigService } from '../config/config.service';
 
 @Injectable({
   providedIn: "root",
@@ -18,9 +19,10 @@ export class AddressService extends AbstractService<Address> {
     http: HttpClient,
     private modalService: NgbModal,
     private loginService: LoginService,
-    private patchFieldChangeService: PatchFieldChangeService
+    private patchFieldChangeService: PatchFieldChangeService,
+    configService: ConfigService
   ) {
-    super(http, "address");
+    super(http, "address", configService);
   }
 
   ADDRESS_USER_EDIT_ENDPOINT = "address/editAddress/";

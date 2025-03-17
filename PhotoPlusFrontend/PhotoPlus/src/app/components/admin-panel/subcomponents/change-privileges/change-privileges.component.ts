@@ -75,7 +75,7 @@ export class ChangePrivilegesComponent implements OnInit {
 
   sendUpdateRole(userCode: string) {
     const user = this.users.find((x) => x.value.code === userCode);
-    const patchMsg = { role: user.value.role } as User | any;
+    const patchMsg = { userRole: user.value.userRole } as User | any;
     this.userService.patch(userCode, patchMsg).subscribe(() => {
       alert('Change successful');
     })
@@ -83,7 +83,7 @@ export class ChangePrivilegesComponent implements OnInit {
 
   changeRoleInModel(userCode: string, role: Role) {
     const user = this.users.find((x) => x.value.code === userCode);
-    user.value.role = role;
+    user.value.userRole = role;
   }
 
   get roleClass(): Role[] {

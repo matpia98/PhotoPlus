@@ -19,7 +19,7 @@
           <div class="form-group">
             Role:
             <select (change)="changeRoleInModel(user.value.code,$event.target.value)">
-              <option *ngFor="let role of roleClass" [selected]="user.value.role === role">
+              <option *ngFor="let role of roleClass" [selected]="user.value.userRole === role">
                 {{ role }}
               </option>
             </select>

@@ -8,18 +8,21 @@ import { LoginService } from '../login/login.service';
 import { Address } from '../../models/address/address';
 import { FieldChange } from '../patch/field-change';
 import { PatchFieldChangeService } from '../patch/patch-field-change.service';
+import { ConfigService } from '../config/config.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class UserService extends AbstractService<User> {
 
-    constructor(http: HttpClient, private loginService: LoginService, private patchFieldChangeService: PatchFieldChangeService) {
-        super(http, 'user');
+    constructor(http: HttpClient, private loginService: LoginService, private patchFieldChangeService: PatchFieldChangeService, configService: ConfigService) {
+        super(http, 'user', configService);
     }
 
     registerUser(newUser: User): Observable<HttpResponse<User>> {
-        return this._http.post<User>(this.hostAddress + this.endpointUrl + '/register/', newUser, { observe: 'response' });
+        console.log('Making registration API call to:', this.hostAddress + this.endpointUrl + '/register');
+        console.log('With user data:', newUser);
+        return this._http.post<User>(this.hostAddress + this.endpointUrl + '/register', newUser, { observe: 'response' });
     }
 
     getUsersSearchByLogin(searchText: string): Observable<User[]> {

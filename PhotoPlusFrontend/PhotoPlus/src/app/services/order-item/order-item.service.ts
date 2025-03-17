@@ -4,14 +4,15 @@ import { OrderItem } from 'src/app/models/order-item/order-item';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { PageInfo } from 'src/app/models/page-info/page-info';
+import { ConfigService } from '../config/config.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OrderItemService extends AbstractService<OrderItem> {
 
-  constructor(http: HttpClient) {
-    super(http, "orderItem");
+  constructor(http: HttpClient, configService: ConfigService) {
+    super(http, "orderItem", configService);
   }
 
   getPageOfOrderItemsByOrder(pageNubmer: number, orderCode: string): Observable<OrderItem[]>{

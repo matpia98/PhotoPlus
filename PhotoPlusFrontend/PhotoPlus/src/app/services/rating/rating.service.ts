@@ -1,17 +1,18 @@
-
 import { Injectable } from '@angular/core';
 import { AbstractService } from '../abstract-service';
 import { Rating } from 'src/app/models/rating/rating';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { PageInfo } from 'src/app/models/page-info/page-info';
 import { Observable } from 'rxjs/internal/Observable';
+import { ConfigService } from '../config/config.service';
+
 @Injectable({
   providedIn: 'root'
 })
-export class RatingService extends AbstractService<Rating>{
+export class RatingService extends AbstractService<Rating> {
 
-  constructor(http: HttpClient) {
-    super(http, "rating");
+  constructor(http: HttpClient, configService: ConfigService) {
+    super(http, "rating", configService);
   }
 
   getRatingsPage(page: number, sortedBy: string, productCode: string) {

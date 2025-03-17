@@ -9,6 +9,6 @@ export class User {
     email: string;
     code: string;
     number: string; /* Phone number */
-    role: Role;
+    userRole?: string;
     links?: Link[];
 }

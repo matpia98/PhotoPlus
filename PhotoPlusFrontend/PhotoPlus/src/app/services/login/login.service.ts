@@ -6,17 +6,19 @@ import { environment } from '../../../environments/environment';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { LoggedUser } from 'src/app/models/login/logged-user.model';
 import { Role } from 'src/app/models/role/role.enum';
+import { ConfigService } from '../config/config.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class LoginService {
 
-    private hostAddress = environment.hostAddress;
+    private hostAddress: string;
     private jwtHelper = new JwtHelperService();
     private loggedUser: LoggedUser | any;
 
-    constructor(private http: HttpClient, private router: Router) {
+    constructor(private http: HttpClient, private router: Router, private configService: ConfigService) {
+        this.hostAddress = this.configService.getApiUrl();
 
         try {
             this.loggedUser = JSON.parse(localStorage.getItem('loggedUser'));
@@ -77,12 +79,12 @@ export class LoginService {
     }
 
     get isModerator(): boolean {
-        const role = this.getLoggedUser()?.role;
+        const role = this.getLoggedUser()?.userRole;
         return role === Role.ADMIN || role === Role.EMPLOYEE;
     }
 
     get isAdmin(): boolean {
-        const role = this.getLoggedUser()?.role;
+        const role = this.getLoggedUser()?.userRole;
         return role === Role.ADMIN;
     }
 }
