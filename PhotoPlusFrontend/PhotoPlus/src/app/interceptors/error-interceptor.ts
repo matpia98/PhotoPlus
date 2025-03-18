@@ -48,24 +48,32 @@ export class ErrorInterceptor implements HttpInterceptor {
   }
 
   handleError(error: HttpErrorResponse) {
+    // Define modal options once
+    const modalOptions = {
+      backdrop: false,
+      keyboard: true,
+      centered: true,
+      windowClass: 'error-modal-window'
+    };
+
     switch (error.status) {
       case 0: {
         //only one modal even if more than 1 error to prevent modal spam
-        const modalRef = this.modalService.open(ErrorModalComponent);
+        const modalRef = this.modalService.open(ErrorModalComponent, modalOptions);
         modalRef.componentInstance.title = "Error occured!";
         modalRef.componentInstance.message = "No connection to backend.";
         break;
       }
       case 401: {
         //only one modal even if more than 1 error to prevent modal spam
-        const modalRef = this.modalService.open(ErrorModalComponent);
+        const modalRef = this.modalService.open(ErrorModalComponent, modalOptions);
         modalRef.componentInstance.title = "Error occured!";
         modalRef.componentInstance.message = error.error.error;
         break;
       }
       case 403: {
         //only one modal even if more than 1 error to prevent modal spam
-        const modalRef = this.modalService.open(ErrorModalComponent);
+        const modalRef = this.modalService.open(ErrorModalComponent, modalOptions);
         modalRef.componentInstance.title = "Error occured!";
         modalRef.componentInstance.message = "Access denied.";
         break;
@@ -74,13 +82,13 @@ export class ErrorInterceptor implements HttpInterceptor {
         if (Array.isArray(error.error)) {
           const errorArray = error.error as Array<ErrorModel>;
           errorArray.forEach(el => {
-            const modalRef = this.modalService.open(ErrorModalComponent);
+            const modalRef = this.modalService.open(ErrorModalComponent, modalOptions);
             modalRef.componentInstance.title = "Error occured!";
             modalRef.componentInstance.message = el.message;
           });
         } else {
           const err = error.error as ErrorModel;
-          const modalRef = this.modalService.open(ErrorModalComponent);
+          const modalRef = this.modalService.open(ErrorModalComponent, modalOptions);
           modalRef.componentInstance.title = "Error occured!";
           modalRef.componentInstance.message = err.message;
         }

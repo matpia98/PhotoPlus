@@ -1,13 +1,13 @@
-
   <div class="modal-header">
     <h4 class="modal-title" id="modal-basic-title">{{title}}</h4>
-    <a class="material-icons" > error_outline </a>
-    <button type="button" class="close" aria-label="Close" (click)="close()">
-      <span aria-hidden="true">&times;</span>
+    <a class="material-icons">error_outline</a>
+    <button type="button" class="close" (click)="close()">
+      <span>&times;</span>
     </button>
   </div>
   <div class="modal-body">
     {{message}}
   </div>
   <div class="modal-footer">
+    <button type="button" class="btn btn-secondary btn-close-modal" #closeBtn (click)="close()">Close</button>
   </div>

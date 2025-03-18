@@ -161,3 +161,35 @@ body {
 .selectBox {
   margin-top: 1.25em;
 }
+
+/* Error Modal Styles */
+.error-modal-window .modal-content {
+  position: relative;
+  z-index: 1055 !important;
+}
+
+.error-modal-window .close,
+.error-modal-window .btn-close-modal {
+  cursor: pointer !important;
+  z-index: 1060 !important;
+  pointer-events: auto !important;
+}
+
+.error-modal-window .modal-header button,
+.error-modal-window .modal-footer button {
+  position: relative;
+  z-index: 1060 !important;
+}
+
+.modal-backdrop {
+  z-index: 1050 !important;
+}
+
+.modal {
+  pointer-events: auto !important; 
+}
+
+/* Ensure buttons are clickable */
+button {
+  cursor: pointer !important;
+}
