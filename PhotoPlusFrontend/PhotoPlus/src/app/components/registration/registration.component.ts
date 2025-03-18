@@ -34,24 +34,16 @@ export class RegistrationComponent implements OnInit {
         console.log('Form submitted', this.registerForm);
         
         if (this.registerForm.invalid) {
-            console.log('Form is invalid', this.registerForm.errors);
             return;
         }
 
         const user: User = this.userFormService.getUserFromUserForm(this.registerForm);
-        console.log('Registering user:', user);
 
-        this.userService.registerUser(user).subscribe(
-            result => {
-                console.log('Registration successful:', result);
-                const modalRef = this.modalService.open(SuccessModalComponent);
-                modalRef.componentInstance.message = 'Welcome ' + user.name + ' ' + user.surname + '!';
-                modalRef.componentInstance.title = 'Registered successfully!';
-            },
-            error => {
-                console.error('Registration error:', error);
-            }
-        );
+        this.userService.registerUser(user).subscribe(result => {
+            const modalRef = this.modalService.open(SuccessModalComponent);
+            modalRef.componentInstance.message = 'Welcome ' + user.name + ' ' + user.surname + '!';
+            modalRef.componentInstance.title = 'Registered successfully!';
+        });
     }
 
 }
