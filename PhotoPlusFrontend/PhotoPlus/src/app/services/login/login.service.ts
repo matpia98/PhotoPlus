@@ -15,21 +15,47 @@ export class LoginService {
 
     private hostAddress: string;
     private jwtHelper = new JwtHelperService();
-    private loggedUser: LoggedUser | any;
+    private loggedUser: LoggedUser | null = null;
 
     constructor(private http: HttpClient, private router: Router, private configService: ConfigService) {
         this.hostAddress = this.configService.getApiUrl();
+        this.initializeFromStorage();
+    }
 
+    private initializeFromStorage() {
         try {
-            this.loggedUser = JSON.parse(localStorage.getItem('loggedUser'));
+            const storedUser = localStorage.getItem('loggedUser');
             const token = localStorage.getItem('token');
-            if (this.jwtHelper.isTokenExpired(token)) {
-                localStorage.removeItem('token');
-                localStorage.removeItem('loggedUser');
+            
+            if (!token) {
+                this.clearStorageAndUser();
+                return;
             }
-        } catch {
-            this.loggedUser = null;
+
+            try {
+                if (this.jwtHelper.isTokenExpired(token)) {
+                    this.clearStorageAndUser();
+                    return;
+                }
+            } catch (e) {
+                console.warn('Invalid token format:', e);
+                this.clearStorageAndUser();
+                return;
+            }
+
+            if (storedUser) {
+                this.loggedUser = JSON.parse(storedUser);
+            }
+        } catch (e) {
+            console.warn('Error initializing from storage:', e);
+            this.clearStorageAndUser();
         }
+    }
+
+    private clearStorageAndUser() {
+        localStorage.removeItem('token');
+        localStorage.removeItem('loggedUser');
+        this.loggedUser = null;
     }
 
     login(login: string, password: string) {
@@ -47,44 +73,51 @@ export class LoginService {
     }
 
     public logout() {
-        localStorage.removeItem('token')
-        localStorage.removeItem('loggedUser');
-        this.http.get(this.hostAddress + 'logout');
+        this.clearStorageAndUser();
+        this.http.get(this.hostAddress + 'logout').subscribe();
     }
 
-    readTokenFromResponse(res) {
+    readTokenFromResponse(res: HttpResponse<any>) {
         const token = res.headers.get('Authorization');
-        localStorage.setItem('token', token);
+        if (token) {
+            localStorage.setItem('token', token);
+        }
     }
 
-    public isLoggedIn() {
-        const token = localStorage.getItem('token')
-        if (token == null) {
-            return false;
-        } else if (this.jwtHelper.isTokenExpired(token)) {
-            localStorage.removeItem('token');
-            localStorage.removeItem('loggedUser');
-            this.loggedUser = null;
+    public isLoggedIn(): boolean {
+        const token = localStorage.getItem('token');
+        if (!token) {
             return false;
         }
-        return true;
+        
+        try {
+            if (this.jwtHelper.isTokenExpired(token)) {
+                this.clearStorageAndUser();
+                return false;
+            }
+            return true;
+        } catch (e) {
+            console.warn('Error checking token expiration:', e);
+            this.clearStorageAndUser();
+            return false;
+        }
     }
 
-    getLoggedUser(): LoggedUser {
+    getLoggedUser(): LoggedUser | null {
         return this.loggedUser;
     }
 
-    getLoggedUserCode(): string {
-        return this.loggedUser.code;
+    getLoggedUserCode(): string | undefined {
+        return this.loggedUser?.code;
     }
 
     get isModerator(): boolean {
-        const role = this.getLoggedUser()?.userRole;
+        const role = this.loggedUser?.userRole;
         return role === Role.ADMIN || role === Role.EMPLOYEE;
     }
 
     get isAdmin(): boolean {
-        const role = this.getLoggedUser()?.userRole;
+        const role = this.loggedUser?.userRole;
         return role === Role.ADMIN;
     }
 }
