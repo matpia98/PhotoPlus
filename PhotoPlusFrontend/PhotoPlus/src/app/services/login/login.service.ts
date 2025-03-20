@@ -61,7 +61,7 @@ export class LoginService {
     login(login: string, password: string) {
         const loginModel: LoginModel = { login: login, password: password };
 
-        this.http.post<HttpResponse<LoginModel>>(this.hostAddress + 'login', {
+        this.http.post<LoggedUser>(this.hostAddress + 'login', {
             login: login,
             password: password
         }, { observe: 'response' }).subscribe(res => {

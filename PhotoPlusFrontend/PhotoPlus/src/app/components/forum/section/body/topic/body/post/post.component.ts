@@ -49,7 +49,7 @@ export class PostComponent implements OnInit {
   removePost(){
     if(confirm("Are you sure that you want to remove post with content\n" + this.post.value.content)){
       this.postService[this.auth.isModerator? 'delete': "deleteOwn"](this.post.value.code).subscribe(()=>{
-        this.onDeleted.next();
+        this.onDeleted.next(null);
       })
     } else {
       return;
