@@ -8,7 +8,7 @@ ENV NODE_OPTIONS=--openssl-legacy-provider
 COPY package.json package-lock.json ./
 
 RUN npm install --legacy-peer-deps
-RUN npm install -g @angular/cli@13.3.11
+RUN npm install -g @angular/cli@15
 
 COPY . .
 RUN ng build --configuration production

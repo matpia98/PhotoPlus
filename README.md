@@ -58,8 +58,8 @@ PHPAdmin: localhost:8000
 ## Technology stack
 ---
   - Backend:
-    - Java 11
-    - Spring Boot
+    - Java 21
+    - Spring Boot 3
       - Hibernate
       - Web MVC
       - HATEOAS
@@ -67,7 +67,7 @@ PHPAdmin: localhost:8000
     - MySQL
     - JWT
   - Frontend:
-    - Angular
+    - Angular 15
     - Typescript
   - Docker
   - Docker-Compose
@@ -77,4 +77,6 @@ PHPAdmin: localhost:8000
 Both in fronend and in backend we used generic solutions for CRUD operations on database models (entities). User is authenticated via JWT which is genetated during login.
 
 Application provides 4 types of users with different possibilities which are shortly described below.
+
+**Project was recently migrated to Java 21 and Angular 15**
 
